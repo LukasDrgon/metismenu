@@ -15,9 +15,9 @@ const Util = (($) => {
       handle(event) {
         if ($(event.target).is(this)) {
           return event.
-            handleObj.
-            handler.
-            apply(this, arguments);
+          handleObj.
+          handler.
+          apply(this, arguments);
         }
         return undefined;
       }
@@ -124,11 +124,23 @@ const MetisMenu = (($) => {
     }
     init() {
       let self = this;
+
+      $(this._element)
+        .find(this._config.parentTrigger)
+        .has(this._config.subMenu)
+        .children(this._config.triggerElement)
+        .attr('aria-expanded', false);
+
+      $(this._element)
+        .find(this._config.parentTrigger + '.' + this._config.activeClass)
+        .has(this._config.subMenu)
+        .children(this._config.triggerElement)
+        .attr('aria-expanded', true);
+
       $(this._element)
         .find(this._config.parentTrigger + '.' + this._config.activeClass)
         .has(this._config.subMenu)
         .children(this._config.subMenu)
-        .attr('aria-expanded', true)
         .addClass(this._config.collapseClass + ' ' + this._config.collapseInClass);
 
       $(this._element)
@@ -136,33 +148,39 @@ const MetisMenu = (($) => {
         .not('.' + this._config.activeClass)
         .has(this._config.subMenu)
         .children(this._config.subMenu)
-        .attr('aria-expanded', false)
         .addClass(this._config.collapseClass);
 
       $(this._element)
         .find(this._config.parentTrigger)
-        .has(this._config.subMenu)
         .children(this._config.triggerElement)
         .on(Event.CLICK_DATA_API, function (e) {
           var _this = $(this);
           var _parent = _this.parent(self._config.parentTrigger);
           var _siblings = _parent.siblings(self._config.parentTrigger).children(self._config.triggerElement);
           var _list = _parent.children(self._config.subMenu);
-          if (self._config.preventDefault) {
+          if (_list.length && self._config.preventDefault) {
             e.preventDefault();
           }
           if (_this.attr('aria-disabled') === 'true') {
             return;
           }
           if (_parent.hasClass(self._config.activeClass)) {
-            _this.attr('aria-expanded', false);
-            self._hide(_list);
+            if (_list.length) {
+              _this.attr('aria-expanded', false);
+              self._hide(_list);
+            }
 
           } else {
-            self._show(_list);
-            _this.attr('aria-expanded', true);
-            if (self._config.toggle) {
-              _siblings.attr('aria-expanded', false);
+            if (_list.length) {
+              _this.attr('aria-expanded', true);
+              self._show(_list);
+            } else {
+              if (self._config.toggle) {
+                var _siblingsSubMenu = _parent.siblings(self._config.parentTrigger + '.' + self._config.activeClass).children(self._config.subMenu);
+                self._hide(_siblingsSubMenu);
+
+                _siblings.attr('aria-expanded', false);
+              }
             }
           }
 
@@ -195,12 +213,11 @@ const MetisMenu = (($) => {
 
       if (this._config.toggle) {
         this.
-          _hide(_el
-            .parent(this._config.parentTrigger)
-            .siblings()
-            .children(this._config.subMenu + '.' + this._config.collapseInClass)
-            .attr('aria-expanded', false)
-          );
+        _hide(_el
+          .parent(this._config.parentTrigger)
+          .siblings()
+          .children(this._config.subMenu + '.' + this._config.collapseInClass)
+        );
       }
 
       _el
@@ -215,8 +232,7 @@ const MetisMenu = (($) => {
         _el
           .removeClass(_this._config.collapsingClass)
           .addClass(_this._config.collapseClass + ' ' + _this._config.collapseInClass)
-          .height('')
-          .attr('aria-expanded', true);
+          .height('');
 
         _this.setTransitioning(false);
 
@@ -270,9 +286,7 @@ const MetisMenu = (($) => {
 
         _el
           .removeClass(_this._config.collapsingClass)
-          .addClass(_this._config.collapseClass)
-          .attr('aria-expanded', false);
-
+          .addClass(_this._config.collapseClass);
       };
 
       if (!Util.supportsTransitionEnd()) {
@@ -280,7 +294,7 @@ const MetisMenu = (($) => {
         return;
       }
 
-      (_el.height() == 0 || _el.css('display') == 'none') ? complete() : _el
+      (_el.height() == 0 || _el.css('display') == 'none') ? complete(): _el
         .height(0)
         .one(Util.TRANSITION_END, complete)
         .emulateTransitionEnd(TRANSITION_DURATION);
@@ -294,9 +308,10 @@ const MetisMenu = (($) => {
       $.removeData(this._element, DATA_KEY);
 
       $(this._element)
-        .find(this._config.parentTrigger)
-        .has(this._config.subMenu)
-        .children(this._config.triggerElement)
+        //   .find(this._config.parentTrigger)
+        //   .has(this._config.subMenu)
+        //   .children(this._config.triggerElement)
+        .find(this._config.triggerElement)
         .off('click');
 
       this._transitioning = null;
