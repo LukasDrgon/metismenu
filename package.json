@@ -4,6 +4,7 @@
   "description": "A jQuery menu plugin",
   "main": "./dist/metisMenu.js",
   "style":"./dist/metisMenu.css",
+  "types": "dist/types/metismenu.d.ts",
   "files": [
     "dist",
     "src"
