@@ -1,6 +1,7 @@
 # metismenu
 [![NPM version](https://img.shields.io/npm/v/metismenu.svg?style=flat)](https://www.npmjs.com/package/metismenu)
 [![NPM monthly downloads](https://img.shields.io/npm/dm/metismenu.svg?style=flat)](https://npmjs.org/package/metismenu)
+[![jsDelivr monthly hits](https://data.jsdelivr.com/v1/package/npm/metismenu/badge?style=rounded)](https://www.jsdelivr.com/package/npm/metismenu)
 [![NPM total downloads](https://img.shields.io/npm/dt/metismenu.svg?style=flat)](https://npmjs.org/package/metismenu)
 [![Linux Build Status](https://img.shields.io/travis/onokumus/metismenu.svg?style=flat&label=Travis)](https://travis-ci.org/onokumus/metismenu)
 [![Packagist](https://img.shields.io/packagist/v/onokumus/metismenu.svg)](https://packagist.org/packages/onokumus/metismenu)
